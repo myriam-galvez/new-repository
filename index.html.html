@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Frases + Biblia — Español (México)</title>
+  <style>
+    :root{
+      --bg1:#0b1220;
+      --bg2:#121a2f;
+      --card:#0f1730cc;
+      --stroke:#2a3760;
+      --text:#eaf0ff;
+      --muted:#b9c6ffcc;
+      --accent:#8b5cf6;
+      --accent2:#22c55e;
+      --warn:#f59e0b;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 14px;
+      --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color-scheme: dark;
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, #1b2a5a 0%, transparent 60%),
+        radial-gradient(900px 500px at 80% 30%, #3b1f6b 0%, transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height: 100vh;
+    }
+
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    header{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+
+    .title{ display:flex; flex-direction:column; gap:6px; }
+
+    h1{
+      font-size: clamp(20px, 3vw, 30px);
+      margin: 0;
+      letter-spacing: .2px;
+    }
+    .subtitle{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.3;
+      max-width: 70ch;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 16px;
+      align-items:start;
+    }
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .panel{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .panel .hd{
+      padding: 14px 14px 10px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .panel .hd .kicker{
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing:.4px;
+      text-transform: uppercase;
+    }
+    .panel .bd{ padding: 14px; }
+
+    label{
+      display:block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .help{
+      margin-top: 8px;
+      font-size: 12px;
+      color: rgba(185,198,255,.85);
+      line-height:1.35;
+    }
+
+    /* Chips emociones */
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+    }
+
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      cursor:pointer;
+      user-select:none;
+      font-size: 13px;
+      color: var(--text);
+      transition: transform .05s ease, border-color .2s ease, background .2s ease;
+    }
+    .chip:hover{ transform: translateY(-1px); }
+    .chip input{ accent-color: var(--accent); }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 14px;
+    }
+    .btn{
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 650;
+      cursor:pointer;
+      font-size: 14px;
+      color: #0b1220;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      box-shadow: 0 10px 20px rgba(139,92,246,.25);
+      transition: transform .08s ease, filter .2s ease;
+      flex: 1;
+      min-width: 160px;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.03); }
+    .btn:active{ transform: translateY(0px); }
+
+    .btn.secondary{
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: none;
+      font-weight: 600;
+    }
+
+    .right{ display:flex; flex-direction:column; gap: 12px; }
+    .stack{ display:flex; flex-direction:column; gap: 12px; }
+
+    .card{
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .cardTop{
+      padding: 12px 14px 0 14px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .pill{
+      font-size: 12px;
+      color: rgba(11,18,32,.95);
+      background: rgba(34,197,94,.92);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+    }
+    .pill.alt{ background: rgba(245,158,11,.95); }
+    .pill.gray{
+      background: rgba(185,198,255,.88);
+      font-weight: 800;
+    }
+
+    .cardBody{
+      padding: 10px 14px 14px 14px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .phrase{
+      font-size: 16px;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .verseBox{
+      padding: 12px;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+    }
+    .verseRef{
+      margin: 0 0 6px 0;
+      font-weight: 800;
+      letter-spacing:.2px;
+    }
+    .verseText{
+      margin: 0;
+      color: rgba(185,198,255,.95);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .cardActions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 6px;
+    }
+    .btnSmall{
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      cursor:pointer;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      font-weight: 700;
+    }
+    .btnSmall.primary{
+      background: rgba(139,92,246,.22);
+      border-color: rgba(139,92,246,.35);
+    }
+
+    .footerMsg{
+      margin-top: 18px;
+      text-align:center;
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-weight: 900;
+      letter-spacing: .2px;
+      padding: 14px 10px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(34,197,94,.18), rgba(139,92,246,.18));
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.78);
+      color: white;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      font-size: 13px;
+      max-width: 92vw;
+      display:none;
+      z-index: 50;
+    }
+
+    /* Dropdown custom (situación) */
+    .dd{ position:relative; width:100%; }
+
+    .ddBtn{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      cursor:pointer;
+      font-size:14px;
+      outline:none;
+    }
+    .ddBtn:focus{
+      border-color: rgba(139,92,246,.7);
+      box-shadow: 0 0 0 3px rgba(139,92,246,.18);
+    }
+    .ddChevron{ opacity:.9; }
+
+    .ddMenu{
+      position:absolute;
+      left:0; right:0;
+      margin-top: 8px;
+      background: #0b1220;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 14px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.45);
+      overflow:hidden;
+      z-index: 40;
+      max-height: 280px;
+      overflow-y:auto;
+      display:none;
+    }
+    .dd.open .ddMenu{ display:block; }
+
+    .ddItem{
+      padding: 12px 12px;
+      font-size: 14px;
+      color: rgba(234,240,255,.95);
+      cursor:pointer;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .ddItem:last-child{ border-bottom: none; }
+    .ddItem:hover,
+    .ddItem[aria-selected="true"]{
+      background: rgba(139,92,246,.20);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>Frases de ánimo + Biblia</h1>
+        <p class="subtitle">
+          Selecciona tu situación y cómo te sientes. Genera tarjetas que se quedan guardadas (se apilan) para que puedas
+          compartirlas fácilmente.
+        </p>
+      </div>
+    </header>
+
+    <main class="grid">
+      <!-- Panel Izquierdo -->
+      <section class="panel">
+        <div class="hd">
+          <div class="kicker">Tu selección</div>
+        </div>
+
+        <div class="bd">
+          <div style="margin-bottom:14px;">
+            <label for="situacionBtn">¿Qué situación estás viviendo?</label>
+
+            <div class="dd" id="ddSituacion">
+              <button class="ddBtn" id="situacionBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span id="situacionText">Selecciona una opción…</span>
+                <span class="ddChevron">▾</span>
+              </button>
+
+              <div class="ddMenu" id="situacionMenu" role="listbox" aria-label="Situación" tabindex="-1"></div>
+
+              <!-- input oculto para que el resto del código siga igual -->
+              <input type="hidden" id="situacion" value="">
+            </div>
+
+            <div class="help">Tip: entre más honesta sea la selección, más atinada sale la tarjeta.</div>
+          </div>
+
+          <div>
+            <label>¿Cómo te sientes? (puedes elegir varias)</label>
+            <div class="chips" id="emociones"></div>
+          </div>
+
+          <div class="actions">
+            <button class="btn" id="btnGenerar">Generar</button>
+            <button class="btn secondary" id="btnLimpiar">Limpiar selecciones</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel Derecho -->
+      <section class="right">
+        <section class="panel">
+          <div class="hd">
+            <div class="kicker">Tus tarjetas</div>
+            <div style="color:var(--muted); font-size:12px;">Se apilan y no se borran</div>
+          </div>
+          <div class="bd">
+            <div class="stack" id="stack">
+              <div style="color:var(--muted); font-size:13px; line-height:1.4;">
+                Aún no has generado tarjetas. Elige una situación, emociones y presiona <b>Generar</b>.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="footerMsg">Dios te ama, sigue confiando en Dios</div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const EMOCIONES = [
+      "Nervios","Tristeza","Miedo","Desmotivación","Coraje","Preocupación",
+      "Ansiedad","Soledad","Cansancio","Culpa","Esperanza (poquita, pero existe)"
+    ];
+
+    const SITUACIONES = [
+      "Duelo por muerte de un ser querido",
+      "Duelo por trabajo (pérdida / cambio)",
+      "Enfermedad",
+      "Nervios por una entrevista de trabajo",
+      "Desmotivación en su vida",
+      "Ansiedad por el futuro / incertidumbre",
+      "Conflicto familiar o de pareja",
+      "Soledad / sentirse sin apoyo",
+      "Estrés financiero / deudas",
+      "Culpa / arrepentimiento"
+    ];
+
+    // Banco de respuestas por situación (sin texto bíblico completo; solo referencia + idea)
+    const BANCO = [
+      {
+        situacion: "Duelo por muerte de un ser querido",
+        tags: ["Tristeza","Soledad","Cansancio","Miedo"],
+        frase: [
+          "Hoy no tienes que ser fuerte todo el tiempo. Permítete llorar… y también recibir consuelo.",
+          "Aunque duela, no estás sola. Dios abraza tu corazón en este proceso, paso a paso.",
+          "Tu amor no se borra. Dios guarda tus recuerdos y te sostiene mientras sanas."
+        ],
+        versiculos: [
+          { ref: "Mateo 5:4", idea: "Dios ve tu llanto y promete consuelo real para tu corazón." },
+          { ref: "Salmo 34:18", idea: "Dios está cerca cuando el corazón está roto y te sostiene cuando ya no puedes." },
+          { ref: "Juan 14:1-3", idea: "Jesús invita a confiar: hay esperanza más allá del dolor presente." }
+        ]
+      },
+      {
+        situacion: "Duelo por trabajo (pérdida / cambio)",
+        tags: ["Ansiedad","Preocupación","Cansancio","Desmotivación","Miedo"],
+        frase: [
+          "Que este cierre no te defina. Tu valor no depende de un puesto: Dios abre caminos nuevos.",
+          "Un cambio difícil puede ser el inicio de algo mejor. Hoy respira, mañana se aclara.",
+          "Paso pequeño hoy: ordena tu mente, pide guía, y confía en que no estás sola."
+        ],
+        versiculos: [
+          { ref: "Jeremías 29:11", idea: "Dios puede transformar la incertidumbre en esperanza y dirección." },
+          { ref: "Proverbios 3:5-6", idea: "Confía y pide guía: Dios endereza tus pasos cuando no ves claro." },
+          { ref: "Mateo 6:26-34", idea: "No cargar todo de golpe: Dios cuida y te invita a vivir un día a la vez." }
+        ]
+      },
+      {
+        situacion: "Enfermedad",
+        tags: ["Miedo","Cansancio","Tristeza","Ansiedad"],
+        frase: [
+          "Tu cuerpo está en batalla, pero tu alma no está sola. Dios camina contigo en cada etapa.",
+          "Hoy haz lo que puedas, y lo demás entrégalo. Dios te sostiene incluso en lo frágil.",
+          "Que tu oración sea simple: “Señor, aquí estoy. Dame paz y fortaleza”."
+        ],
+        versiculos: [
+          { ref: "Isaías 41:10", idea: "Dios promete presencia, fuerza y ayuda cuando sientes que no puedes." },
+          { ref: "Salmo 23", idea: "Aun en valle oscuro, Dios guía y acompaña con ternura." },
+          { ref: "2 Corintios 12:9", idea: "En la debilidad, Dios puede mostrar una fuerza que no viene de ti." }
+        ]
+      },
+      {
+        situacion: "Nervios por una entrevista de trabajo",
+        tags: ["Nervios","Ansiedad","Miedo","Preocupación"],
+        frase: [
+          "Respira: tu historia tiene valor. Entra con calma: Dios va delante de ti.",
+          "No necesitas ser perfecta; necesitas ser tú. Dios te da claridad y paz.",
+          "Hoy confía en la preparación que hiciste. Lo demás, suéltalo en manos de Dios."
+        ],
+        versiculos: [
+          { ref: "Filipenses 4:6-7", idea: "Entrega tu ansiedad en oración y recibe paz para pensar con claridad." },
+          { ref: "Josué 1:9", idea: "Sé valiente: Dios está contigo donde sea que vayas." },
+          { ref: "Salmo 56:3", idea: "Cuando llegue el miedo, elige confiar un paso a la vez." }
+        ]
+      },
+      {
+        situacion: "Desmotivación en su vida",
+        tags: ["Desmotivación","Cansancio","Tristeza"],
+        frase: [
+          "Si hoy solo puedes dar un paso chiquito, ya es victoria. Dios trabaja también en lo pequeño.",
+          "No eres un fracaso por sentirte cansada. Dios renueva fuerzas y esperanza.",
+          "Aunque no lo sientas, tu vida tiene propósito. Dios no termina lo que empieza a sanar."
+        ],
+        versiculos: [
+          { ref: "Isaías 40:31", idea: "Dios renueva tus fuerzas cuando esperas en Él." },
+          { ref: "Gálatas 6:9", idea: "No te rindas: la cosecha llega a su tiempo." },
+          { ref: "Salmo 42:11", idea: "Habla a tu alma con esperanza cuando te sientes abajo." }
+        ]
+      },
+      {
+        situacion: "Ansiedad por el futuro / incertidumbre",
+        tags: ["Ansiedad","Preocupación","Miedo","Nervios"],
+        frase: [
+          "Tu futuro no está en el aire: está en manos de Dios. Hoy solo camina el siguiente paso.",
+          "No tienes que resolver toda tu vida hoy. Dios te guía por partes, con paciencia.",
+          "Cuando la mente se acelere, vuelve a lo básico: respira, ora, y confía."
+        ],
+        versiculos: [
+          { ref: "Mateo 6:34", idea: "Un día a la vez: Dios te acompaña hoy, y también mañana." },
+          { ref: "Salmo 37:5", idea: "Entrega tu camino a Dios: Él actúa incluso cuando tú no ves cómo." },
+          { ref: "Juan 14:27", idea: "Jesús ofrece una paz diferente: firme, no frágil." }
+        ]
+      },
+      {
+        situacion: "Conflicto familiar o de pareja",
+        tags: ["Coraje","Tristeza","Culpa","Preocupación"],
+        frase: [
+          "Pide a Dios una palabra sabia antes de reaccionar. La paz se construye con pequeños actos.",
+          "No todo se resuelve hoy. Pero sí puedes elegir respeto, verdad y calma.",
+          "Dios puede sanar vínculos… empezando por sanar tu corazón primero."
+        ],
+        versiculos: [
+          { ref: "Efesios 4:26-32", idea: "Evita que el enojo domine: busca palabras que sanen y construyan." },
+          { ref: "Proverbios 15:1", idea: "La respuesta suave desactiva pleitos y abre diálogo." },
+          { ref: "Colosenses 3:13", idea: "Perdonar (cuando sea posible) aligera el corazón y abre caminos." }
+        ]
+      },
+      {
+        situacion: "Soledad / sentirse sin apoyo",
+        tags: ["Soledad","Tristeza","Ansiedad"],
+        frase: [
+          "Aunque te sientas sola, Dios no se va. Su presencia no depende de tu ánimo.",
+          "Dios te ve, te escucha y te acompaña… incluso cuando nadie más entiende.",
+          "Hoy mereces un abrazo: si no llega de alguien, pídeselo a Dios en oración."
+        ],
+        versiculos: [
+          { ref: "Salmo 139:7-10", idea: "No hay lugar donde Dios no te alcance." },
+          { ref: "Isaías 43:2", idea: "En momentos difíciles, Dios promete estar contigo." },
+          { ref: "Hebreos 13:5", idea: "Dios no te abandona: su fidelidad permanece." }
+        ]
+      },
+      {
+        situacion: "Estrés financiero / deudas",
+        tags: ["Preocupación","Ansiedad","Miedo","Cansancio"],
+        frase: [
+          "Tu valor no depende de tu cuenta bancaria. Dios es proveedor y también te da sabiduría.",
+          "Un plan pequeño hoy vale más que mil preocupaciones. Dios te guía con paz.",
+          "No estás sola con esta carga: pídele a Dios claridad para ordenar y avanzar."
+        ],
+        versiculos: [
+          { ref: "Mateo 6:33", idea: "Prioriza a Dios: Él conoce tus necesidades y puede abrir provisión." },
+          { ref: "Proverbios 21:5", idea: "La planificación constante trae progreso; la prisa trae caos." },
+          { ref: "Salmo 37:25", idea: "Dios sostiene a quienes confían: no siempre fácil, pero sí fiel." }
+        ]
+      },
+      {
+        situacion: "Culpa / arrepentimiento",
+        tags: ["Culpa","Tristeza","Ansiedad"],
+        frase: [
+          "Arrepentirte ya es un paso de regreso a la luz. Dios no te cancela: te restaura.",
+          "No eres tu peor error. En Dios hay perdón y un inicio nuevo.",
+          "La culpa puede ser una señal… pero no es tu casa. Dios te llama a la paz."
+        ],
+        versiculos: [
+          { ref: "1 Juan 1:9", idea: "Cuando te acercas con sinceridad, Dios perdona y limpia el corazón." },
+          { ref: "Salmo 51", idea: "Una oración honesta puede abrir un proceso real de restauración." },
+          { ref: "Lucas 15:11-24", idea: "Dios recibe de vuelta al que regresa: con misericordia, no con humillación." }
+        ]
+      }
+    ];
+
+    // ===== Helpers =====
+    const norm = (s) => (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    const rnd = (arr) => arr[Math.floor(Math.random()*arr.length)];
+
+    function showToast(msg){
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.style.display = "block";
+      clearTimeout(showToast._id);
+      showToast._id = setTimeout(()=>{ t.style.display="none"; }, 2200);
+    }
+
+    function buildEmocionesUI(){
+      const box = document.getElementById("emociones");
+      box.innerHTML = "";
+      EMOCIONES.forEach((e, idx) => {
+        const id = "emo_" + idx;
+        const chip = document.createElement("label");
+        chip.className = "chip";
+        chip.setAttribute("for", id);
+        chip.innerHTML = `
+          <input id="${id}" type="checkbox" value="${e}" />
+          <span>${e}</span>
+        `;
+        box.appendChild(chip);
+      });
+    }
+
+    function getSelectedEmociones(){
+      return Array.from(document.querySelectorAll('#emociones input[type="checkbox"]:checked'))
+        .map(x => x.value);
+    }
+
+    // ===== Dropdown custom =====
+    function initSituacionDropdown(){
+      const dd = document.getElementById("ddSituacion");
+      const btn = document.getElementById("situacionBtn");
+      const menu = document.getElementById("situacionMenu");
+      const text = document.getElementById("situacionText");
+      const hidden = document.getElementById("situacion");
+
+      menu.innerHTML = SITUACIONES.map(s => `
+        <div class="ddItem" role="option" tabindex="0" aria-selected="false" data-value="${s}">
+          ${s}
+        </div>
+      `).join("");
+
+      const items = () => Array.from(menu.querySelectorAll(".ddItem"));
+
+      function open(){
+        dd.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
+        menu.focus();
+      }
+      function close(){
+        dd.classList.remove("open");
+        btn.setAttribute("aria-expanded", "false");
+      }
+      function setValue(val){
+        hidden.value = val;
+        text.textContent = val;
+        items().forEach(it => it.setAttribute("aria-selected", it.dataset.value === val ? "true" : "false"));
+        close();
+      }
+
+      btn.addEventListener("click", () => dd.classList.contains("open") ? close() : open());
+
+      menu.addEventListener("click", (e) => {
+        const it = e.target.closest(".ddItem");
+        if(!it) return;
+        setValue(it.dataset.value);
+      });
+
+      menu.addEventListener("keydown", (e) => {
+        if(e.key === "Escape"){ close(); btn.focus(); }
+        if(e.key === "Enter"){
+          const it = document.activeElement.closest(".ddItem");
+          if(it) setValue(it.dataset.value);
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        if(!dd.contains(e.target)) close();
+      });
+
+      initSituacionDropdown.setValue = (v) => {
+        hidden.value = v || "";
+        text.textContent = v || "Selecciona una opción…";
+        items().forEach(it => it.setAttribute("aria-selected","false"));
+        close();
+      };
+    }
+
+    function clearSelections(){
+      if (typeof initSituacionDropdown?.setValue === "function"){
+        initSituacionDropdown.setValue("");
+      } else {
+        document.getElementById("situacion").value = "";
+      }
+      document.querySelectorAll('#emociones input[type="checkbox"]').forEach(cb => cb.checked = false);
+    }
+
+    function scoreBanco(item, emociones){
+      const set = new Set(item.tags.map(norm));
+      let s = 0;
+      emociones.forEach(e => { if (set.has(norm(e))) s += 2; });
+      if (emociones.some(e => norm(e).includes("esperanza"))) s += 1;
+      return s;
+    }
+
+    function pickResponse(situacion, emociones){
+      const candidates = BANCO.filter(x => x.situacion === situacion);
+      if (!candidates.length) return null;
+      const sorted = [...candidates].sort((a,b)=> scoreBanco(b, emociones) - scoreBanco(a, emociones));
+      const chosen = sorted[0];
+      return { frase: rnd(chosen.frase), versiculo: rnd(chosen.versiculos) };
+    }
+
+    function buildShareText({situacion, emociones, frase, versiculo}){
+      const emo = emociones.length ? emociones.join(", ") : "—";
+      return [
+        "🌿 Mensaje de ánimo",
+        "",
+        `Situación: ${situacion}`,
+        `Emociones: ${emo}`,
+        "",
+        `Frase: ${frase}`,
+        "",
+        `Versículo: ${versiculo.ref}`,
+        `Idea: ${versiculo.idea}`,
+        "",
+        "✨ Dios te ama, sigue confiando en Dios"
+      ].join("\n");
+    }
+
+    async function shareOrCopy(text){
+      try{
+        if (navigator.share){
+          await navigator.share({ text });
+          return;
+        }
+      }catch(e){
+        if (String(e).toLowerCase().includes("abort")) return;
+      }
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast("Copiado ✅ Ahora puedes pegarlo en WhatsApp, iMessage, etc.");
+      }catch(_){
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        showToast("Copiado ✅");
+      }
+    }
+
+    function makeCard({situacion, emociones, frase, versiculo}){
+      const card = document.createElement("article");
+      card.className = "card";
+
+      const now = new Date();
+      const ts = now.toLocaleString("es-MX", { dateStyle:"medium", timeStyle:"short" });
+
+      const emoPills = emociones.slice(0,3).map(e => `<span class="pill gray">${e}</span>`).join("");
+      const more = emociones.length > 3 ? `<span class="pill alt">+${emociones.length - 3}</span>` : "";
+
+      const verseLink = `https://www.biblegateway.com/passage/?search=${encodeURIComponent(versiculo.ref)}&version=RVR1960`;
+
+      card.innerHTML = `
+        <div class="cardTop">
+          <div class="meta">
+            <span class="pill">${situacion}</span>
+            ${emoPills}${more}
+          </div>
+          <div style="color:var(--muted); font-size:12px;">${ts}</div>
+        </div>
+
+        <div class="cardBody">
+          <p class="phrase">💛 ${frase}</p>
+
+          <div class="verseBox">
+            <p class="verseRef">📖 ${versiculo.ref}</p>
+            <p class="verseText">${versiculo.idea}</p>
+            <div style="margin-top:10px;">
+              <a href="${verseLink}" target="_blank" rel="noopener noreferrer"
+                 style="color: rgba(167,139,250,.95); font-weight:800; text-decoration:none;">
+                Ver versículo (abrir)
+              </a>
+              <span style="color: var(--muted); font-size:12px;"> — se abre en una página externa</span>
+            </div>
+          </div>
+
+          <div class="cardActions">
+            <button class="btnSmall primary" type="button">Compartir / Enviar</button>
+            <button class="btnSmall" type="button">Copiar texto</button>
+          </div>
+        </div>
+      `;
+
+      const shareText = buildShareText({situacion, emociones, frase, versiculo});
+      const [btnShare, btnCopy] = card.querySelectorAll("button");
+      btnShare.addEventListener("click", () => shareOrCopy(shareText));
+      btnCopy.addEventListener("click", () => shareOrCopy(shareText));
+
+      return card;
+    }
+
+    // ===== Init =====
+    buildEmocionesUI();
+    initSituacionDropdown();
+
+    document.getElementById("btnLimpiar").addEventListener("click", () => {
+      clearSelections();
+      showToast("Listo ✅");
+    });
+
+    document.getElementById("btnGenerar").addEventListener("click", () => {
+      const situacion = document.getElementById("situacion").value;
+      const emociones = getSelectedEmociones();
+
+      if (!situacion){
+        showToast("Selecciona una situación primero 🙏");
+        return;
+      }
+
+      const res = pickResponse(situacion, emociones);
+      if (!res){
+        showToast("No encontré contenido para esa situación.");
+        return;
+      }
+
+      const stack = document.getElementById("stack");
+      if (stack.children.length === 1 && stack.children[0].textContent.includes("Aún no has generado")){
+        stack.innerHTML = "";
+      }
+
+      const card = makeCard({
+        situacion,
+        emociones,
+        frase: res.frase,
+        versiculo: res.versiculo
+      });
+
+      stack.prepend(card);
+      card.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  </script>
+</body>
+</html>
